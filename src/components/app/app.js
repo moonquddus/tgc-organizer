@@ -3,8 +3,9 @@ import { Route, Switch } from "react-router-dom";
 
 import Menu from '../menu/menu';
 import NewGame from '../newgame/newgame';
+import Editor from '../editor/editor';
 
-import './app.css';
+import './app.scss';
 
 class App extends Component {
 
@@ -13,6 +14,7 @@ class App extends Component {
       <Switch>
         <Route exact path="/" component={Menu} />
         <Route path="/new-game" component={NewGame} />
+        <Route path="/editor" component={Editor} />
       </Switch>
     );
   }

@@ -25,6 +25,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "redux-devtools": "^3.5.0"
+    "node-sass": "^4.11.0",
+    "redux-devtools": "^3.5.0",
+    "sass-loader": "^7.1.0"
   }
 }

@@ -1,0 +1,27 @@
+.Editor {
+    main {
+        .grid {
+            display: inline-block;
+            top: 0;
+            left: 0;
+            width: 70vw;
+            height: auto;
+            margin: 10vh 15vw;
+            background: #eee;
+
+            .grid-row {
+                width: 100%;
+                display: flex;
+                justify-content: space-evenly;
+                margin: 3vh 0;
+
+                .grid-column {
+                    width: 10vw;
+                    height: 14.4vw;
+                    background: #f00;
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
