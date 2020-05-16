@@ -7,17 +7,12 @@ import Editor from '../editor/editor';
 
 import './app.scss';
 
-class App extends Component {
+const App = () => (
+  <Switch>
+    <Route exact path="/" component={Menu} />
+    <Route path="/new-game" component={NewGame} />
+    <Route path="/editor" component={Editor} />
+  </Switch>
+)
 
-  render() {
-    return (
-      <Switch>
-        <Route exact path="/" component={Menu} />
-        <Route path="/new-game" component={NewGame} />
-        <Route path="/editor" component={Editor} />
-      </Switch>
-    );
-  }
-}
-
-export default App;
+export default App

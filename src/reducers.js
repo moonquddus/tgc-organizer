@@ -1,20 +1,31 @@
-import { UPDATE_GRID } from "./constants";
+import { ADD_CARD, UPDATE_GRID } from "./constants"
 
 const initialState = {
     grid: {
         x: 3,
         y: 3,
         pages: 2
-    }
-};
+    },
+    cards: [],
+    pile: []
+}
 
 function rootReducer(state = initialState, action) {
-    if (action.type === UPDATE_GRID) {
-        return Object.assign({}, state, {
-            grid: action.payload.grid
-        });
-    }
-    return state;
-};
 
-export default rootReducer;
+    switch(action.type){
+        case UPDATE_GRID:
+            return {
+                ...state,
+                grid: action.payload.grid
+            }
+        case ADD_CARD:
+            return {
+                ...state,
+                cards: [...state.cards, action.payload]
+            }
+        default:
+            return state
+    }
+}
+
+export default rootReducer

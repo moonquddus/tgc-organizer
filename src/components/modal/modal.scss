@@ -1,0 +1,23 @@
+.modal-screen {
+  background: rgba(0,0,0,0.5);
+  z-index: 100000000000000;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-container {
+  z-index: 100000000000001;
+  background: #fff;
+  position: fixed;
+  display: block;
+  width: 50%;
+  height: 50%;
+  top: 25%;
+  left: 25%;
+  border-radius: 3px;
+  box-shadow: 0px 3px 10px #333;
+}
