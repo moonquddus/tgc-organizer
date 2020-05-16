@@ -1,19 +1,31 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
+import { useParams } from 'react-router-dom'
 import Navbar from './navbar/navbar'
+import PageNav from './pageNav/pageNav'
 
 import './editor.scss'
 
 const Editor = props => {
-    const { width, height, pageCount, cards } = props
+    const { width, height, pageCount, album } = props
+    const { page } = useParams()
+    const currentPage = parseInt(page)
 
     const createAlbum = () => {
         let album = [];
-        for (let i = 0; i < pageCount; i++) {
-            album.push(<h2 key={"h2-" + i}>{`Page ${(i + 1)}`}</h2>);
+
+        if (Number.isInteger(currentPage) && currentPage && currentPage <= pageCount){
+            let i = currentPage - 1
+            album.push(<h2 key={"h2-" + i}>{`Page ${(i + 1)}`}</h2>)
             album.push(<div className="grid" key={i}>{createGrid(i + 1)}</div>)
         }
+        else {
+            for (let i = 0; i < pageCount; i++) {
+                album.push(<h2 key={"h2-" + i}>{`Page ${(i + 1)}`}</h2>)
+                album.push(<div className="grid" key={i}>{createGrid(i + 1)}</div>)
+            }
+        }
+
         return album
     }
 
@@ -26,10 +38,11 @@ const Editor = props => {
           //Inner loop to create columns
           for (let j = 0; j < width; j++) {
             let cardNo = ((page-1)* width * height) + ((i * width) + (j + 1))
+            let gridIndex = (i * width) + j
 
-            let cardInner = [`CARD ${cardNo}`]
-            if (cards[cardNo - 1]) {
-                cardInner.push(<img key={"img-" + cardNo} className="cell-image" src={cards[cardNo - 1].img} alt={cards[cardNo - 1].name} />)
+            let cardInner = [`GRID-${gridIndex + 1} CARD-${cardNo}`]
+            if (album[page][gridIndex] && album[page][gridIndex].img) {
+                cardInner.push(<img key={"img-" + cardNo} className="cell-image" src={album[page][gridIndex].img} alt={album[gridIndex].name} />)
             }
 
             children.push(<div className="grid-cell" key={page+"-"+i+"-"+j} onClick={handleCellClick.bind(cardNo)}>{cardInner}</div>)
@@ -45,12 +58,15 @@ const Editor = props => {
 
     return (
         <div className="Editor">
-            <header className="Editor-header">
+            <header className="editor-header">
                 <Navbar />
             </header>
             <main>
                 {createAlbum()}
             </main>
+            <footer className="editor-footer">
+                <PageNav page={currentPage} />
+            </footer>
         </div>
     )
 }
@@ -60,7 +76,7 @@ const mapStateToProps = (state) => {
         width: state.grid.x,
         height: state.grid.y,
         pageCount: state.grid.pages,
-        cards: state.cards
+        album: state.album
     }
 }
 export default connect(mapStateToProps)(Editor)

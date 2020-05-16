@@ -6,7 +6,7 @@ const initialState = {
         y: 3,
         pages: 2
     },
-    cards: [],
+    album: [],
     pile: []
 }
 
@@ -21,7 +21,7 @@ function rootReducer(state = initialState, action) {
         case ADD_CARD:
             return {
                 ...state,
-                cards: [...state.cards, action.payload]
+                pile: [...state.pile, action.payload]
             }
         default:
             return state
