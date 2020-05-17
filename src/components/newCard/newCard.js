@@ -6,6 +6,8 @@ import Modal from '../modal/modal'
 import {addCard} from '../../actions'
 import {URL_SEARCH_CARDS, URL_IMG_CDN_SMALL, URL_IMG_CDN_LARGE} from '../../constants'
 
+import {imageUrlToBase64} from '../../util/api'
+
 const NewCard = props => {
   const {open, setOpen, dispatch} = props
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,11 +51,14 @@ const NewCard = props => {
   }
 
   const addCardToPile = (card) => {
-    dispatch(addCard({
-      name: card.name,
-      img: URL_IMG_CDN_LARGE + card.id + '.jpg'
-    }))
-    setOpen(false)
+    let imgUrl = URL_IMG_CDN_LARGE + card.id + '.jpg'
+    imageUrlToBase64(imgUrl).then(imageData => {
+      dispatch(addCard({
+        name: card.name,
+        img: imageData
+      }))
+      setOpen(false)
+    })
   }
 
   const searchResuts = results.map((result, index) => {
