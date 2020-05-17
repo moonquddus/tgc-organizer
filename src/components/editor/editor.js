@@ -13,8 +13,8 @@ const Editor = props => {
     const { page } = useParams()
     const currentPage = parseInt(page)
 
-    const [srcSwap, setSrcSwap] = useState([])
-    const [trgSwap, setTrgSwap] = useState([])
+    const [srcSwap, setSrcSwap] = useState(null)
+    const [trgSwap, setTrgSwap] = useState(null)
 
     const dragStartHandler = e => {
         const albumId = e.target.dataset.albumId
@@ -26,7 +26,8 @@ const Editor = props => {
             setSrcSwap(targetCard)
         }
         else if (pileId){
-            
+            targetCard = parseInt(pileId)
+            setSrcSwap(targetCard)
         }
     }
 
@@ -44,16 +45,26 @@ const Editor = props => {
             setTrgSwap(targetCard)
         }
         else if (pileId){
-            
+            targetCard = parseInt(pileId)
+            setTrgSwap(targetCard)
         }
     }
 
     useEffect(() => {
-        if (trgSwap.length === 2){
-            gridToGridSwap()
-        }
-        else{
-            gridToPileSwap()
+        if (srcSwap !== null && trgSwap !== null){
+            if (Array.isArray(srcSwap)){
+                if (trgSwap.length === 2){
+                    gridToGridSwap()
+                }
+                else{
+                    gridToPileSwap()
+                }
+            }
+            else if (!Array.isArray(srcSwap)){
+                if (trgSwap.length === 2){
+                    pileToGridSwap()
+                }
+            }
         }
     }, [trgSwap])
 
@@ -68,14 +79,45 @@ const Editor = props => {
             album: newAlbum, 
             pile: pile
         }) )
+        resetDragTargets()
     }
 
     const gridToPileSwap = () => {
+        let newAlbum = [...album]
+        let newPile = [...pile]
+        const cardA = album[srcSwap[0]][srcSwap[1]]
+        newAlbum[srcSwap[0]][srcSwap[1]] = null
+        newPile.push(cardA)
 
+        dispatch( updateAlbum({ 
+            album: newAlbum, 
+            pile: newPile
+        }) )
+        resetDragTargets()
     }
 
     const pileToGridSwap = () => {
-        
+        let newAlbum = [...album]
+        let newPile = [...pile]
+        const cardA = pile[srcSwap]
+        const cardB = album[trgSwap[0]][trgSwap[1]]
+        newAlbum[trgSwap[0]][trgSwap[1]] = cardA
+        newPile.splice(srcSwap, 1)
+        // Are we swapping cards, or inserting into an empty grid slot?
+        if (cardB !== null){
+            newPile.push(cardB)
+        }
+
+        dispatch( updateAlbum({ 
+            album: newAlbum, 
+            pile: newPile
+        }) )
+        resetDragTargets()
+    }
+
+    const resetDragTargets = () => {
+        setSrcSwap(null)
+        setTrgSwap(null)
     }
 
     const createAlbumEditor = () => {
@@ -109,10 +151,10 @@ const Editor = props => {
 
             let cardInner = [`CARD ${cardNo}`]
             if (album[selectedPage][gridIndex] && album[selectedPage][gridIndex].img) {
-                cardInner.push(<img data-album-id={`${selectedPage}-${cardNo-1}`} key={"img-" + cardNo} className="cell-image" src={album[selectedPage][gridIndex].img} alt={album[selectedPage][gridIndex].name} />)
+                cardInner.push(<img data-album-id={`${selectedPage}-${gridIndex}`} key={"img-" + cardNo} className="cell-image" src={album[selectedPage][gridIndex].img} alt={album[selectedPage][gridIndex].name} />)
             }
 
-            children.push(<div data-album-id={`${selectedPage}-${cardNo-1}`} onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDrop={dragEndHandler} className="grid-cell" key={selectedPage+"-"+i+"-"+j} onClick={handleCellClick.bind(cardNo)}>{cardInner}</div>)
+            children.push(<div data-album-id={`${selectedPage}-${gridIndex}`} onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDrop={dragEndHandler} className="grid-cell" key={selectedPage+"-"+i+"-"+j} onClick={handleCellClick.bind(cardNo)}>{cardInner}</div>)
           }
           //Create the row and add the columns
           grid.push(<div className="grid-row" key={selectedPage+"-"+i}>{children}</div>)
@@ -132,7 +174,11 @@ const Editor = props => {
                 {createAlbumEditor()}
             </main>
             <footer className="editor-footer">
-                <CardPile />
+                <CardPile
+                    dragStartHandler={dragStartHandler}
+                    dragOverHandler={dragOverHandler}
+                    dragEndHandler={dragEndHandler}
+                />
                 <PageNav page={currentPage} />
             </footer>
         </div>
