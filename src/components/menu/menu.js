@@ -13,6 +13,7 @@ class Menu extends Component {
           <p>TCG Card Organizer</p>
           <p><Link to="/new-game/">New</Link></p>
           <p><button>Load</button></p>
+          <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></div>
         </header>
       </div>
     );

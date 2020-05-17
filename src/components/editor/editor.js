@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Navbar from './navbar/navbar'
 import PageNav from './pageNav/pageNav'
+import CardPile from './cardPile/cardPile'
 
 import './editor.scss'
 
@@ -11,25 +12,25 @@ const Editor = props => {
     const { page } = useParams()
     const currentPage = parseInt(page)
 
-    const createAlbum = () => {
-        let album = [];
+    const createAlbumEditor = () => {
+        let albumEditor = [];
 
         if (Number.isInteger(currentPage) && currentPage && currentPage <= pageCount){
             let i = currentPage - 1
-            album.push(<h2 key={"h2-" + i}>{`Page ${(i + 1)}`}</h2>)
-            album.push(<div className="grid" key={i}>{createGrid(i + 1)}</div>)
+            albumEditor.push(<h2 key={"h2-" + i}>{`Page ${(i + 1)}`}</h2>)
+            albumEditor.push(<div className="grid" key={i}>{createGrid(i)}</div>)
         }
         else {
             for (let i = 0; i < pageCount; i++) {
-                album.push(<h2 key={"h2-" + i}>{`Page ${(i + 1)}`}</h2>)
-                album.push(<div className="grid" key={i}>{createGrid(i + 1)}</div>)
+                albumEditor.push(<h2 key={"h2-" + i}>{`Page ${(i + 1)}`}</h2>)
+                albumEditor.push(<div className="grid" key={i}>{createGrid(i)}</div>)
             }
         }
 
-        return album
+        return albumEditor
     }
 
-    const createGrid = page => {
+    const createGrid = selectedPage => {
         let grid = []
 
         // Outer loop to create rows
@@ -37,18 +38,18 @@ const Editor = props => {
           let children = []
           //Inner loop to create columns
           for (let j = 0; j < width; j++) {
-            let cardNo = ((page-1)* width * height) + ((i * width) + (j + 1))
+            let cardNo = ((selectedPage)* width * height) + ((i * width) + (j + 1))
             let gridIndex = (i * width) + j
 
-            let cardInner = [`GRID-${gridIndex + 1} CARD-${cardNo}`]
-            if (album[page][gridIndex] && album[page][gridIndex].img) {
-                cardInner.push(<img key={"img-" + cardNo} className="cell-image" src={album[page][gridIndex].img} alt={album[gridIndex].name} />)
+            let cardInner = [`CARD ${cardNo}`]
+            if (album[selectedPage][gridIndex] && album[selectedPage][gridIndex].img) {
+                cardInner.push(<img key={"img-" + cardNo} className="cell-image" src={album[selectedPage][gridIndex].img} alt={album[gridIndex].name} />)
             }
 
-            children.push(<div className="grid-cell" key={page+"-"+i+"-"+j} onClick={handleCellClick.bind(cardNo)}>{cardInner}</div>)
+            children.push(<div className="grid-cell" key={selectedPage+"-"+i+"-"+j} onClick={handleCellClick.bind(cardNo)}>{cardInner}</div>)
           }
           //Create the row and add the columns
-          grid.push(<div className="grid-row" key={page+"-"+i}>{children}</div>)
+          grid.push(<div className="grid-row" key={selectedPage+"-"+i}>{children}</div>)
         }
         return grid
     }
@@ -62,9 +63,10 @@ const Editor = props => {
                 <Navbar />
             </header>
             <main>
-                {createAlbum()}
+                {createAlbumEditor()}
             </main>
             <footer className="editor-footer">
+                <CardPile />
                 <PageNav page={currentPage} />
             </footer>
         </div>

@@ -1,62 +1,71 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux'
 import './newgame.scss';
-import store from '../../store';
-import { updateGrid } from "../../actions";
+import { updateGrid, initAlbum } from "../../actions";
 
-class NewGame extends Component {
-  constructor(props) {
-    super(props);
+const NewGame = props => {
+  const { grid, history, dispatch } = props
 
-    this.formRef = {
-      x: React.createRef(),
-      y: React.createRef(),
-      pages: React.createRef()
-    };
+  const [formX, setFormX] = useState(grid.x)
+  const [formY, setFormY] = useState(grid.y)
+  const [formP, setFormP] = useState(grid.pages)
 
-    store.subscribe(() => console.log(store.getState()));
+  const handleSubmit = e => {
+    dispatch(updateGrid({
+      grid:{
+        x: formX,
+        y: formY,
+        pages: formP
+      }
+    }));
+
+    // create a new empty album
+    let album = []
+    for (let i = 0; i < formP; i++){
+      let page = []
+      for (let j = 0; j < (formX * formY); j++){
+        page.push({})
+      }
+      album.push(page)
+    }
+    dispatch( initAlbum({ 
+      album: album, 
+      pile: []
+    }) )
+
+    history.push('/editor/1');
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    
-    let grid = {
-      x: this.formRef.x.current.value,
-      y: this.formRef.y.current.value,
-      pages: this.formRef.pages.current.value
-    };
-
-    store.dispatch( updateGrid( { grid: grid } ) );
-
-    this.props.history.push('/editor');
-  }
-  
-  render() {
-    return (
-      <div className="newgame">
-        <header className="newgame-header">
-          <h2>Configure New Album</h2>
-          <p>These settings can be changed later</p>
-        </header>
-        
-        <main>
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            <div className="form-control">
-              <label htmlFor="grid_x">Width: <input type="number" name="grid_x" ref={this.formRef.x} defaultValue="3" /></label>
-            </div>
-            <div className="form-control">
-              <label htmlFor="grid_y">Height: <input type="number" name="grid_y" ref={this.formRef.y} defaultValue="3" /></label>
-            </div>
-            <div className="form-control">
-              <label htmlFor="grid_pages">Pages: <input type="number" name="grid_pages" ref={this.formRef.pages} defaultValue="2" /></label>
-            </div>
-            <div className="form-control">
-              <button type="submit">Create New Album</button>
-            </div>
-          </form>
-        </main>
-      </div>
-    );
-  }
+  return (
+    <div className="newgame">
+      <header className="newgame-header">
+        <h2>Configure New Album</h2>
+        <p>These settings can be changed later</p>
+      </header>
+      
+      <main>
+        <form onSubmit={handleSubmit.bind(this)}>
+          <div className="form-control">
+            <label htmlFor="grid_x">Width: <input type="number" name="grid_x" value={formX} onChange={(e) => setFormX(e.target.value)} /></label>
+          </div>
+          <div className="form-control">
+            <label htmlFor="grid_y">Height: <input type="number" name="grid_y" value={formY} onChange={(e) => setFormY(e.target.value)} /></label>
+          </div>
+          <div className="form-control">
+            <label htmlFor="grid_pages">Pages: <input type="number" name="grid_pages" value={formP} onChange={(e) => setFormP(e.target.value)} /></label>
+          </div>
+          <div className="form-control">
+            <button type="submit">Create New Album</button>
+          </div>
+        </form>
+      </main>
+    </div>
+  )
 }
 
-export default NewGame;
+const mapStateToProps = (state) => {
+  return { 
+    grid: state.grid
+  }
+}
+export default connect(mapStateToProps)(NewGame)

@@ -8,7 +8,7 @@ const PageNav = props => {
   const { page, pageCount } = props
 
   const generatePagination = () => {
-    if (!pageCount || !page || page > pageCount)
+    if (!pageCount || pageCount <= 1)
       return ''
 
     let pageElements = []
