@@ -10,19 +10,19 @@ Personal Project made with React/Redux to organize a card collection album
 
 ## TODO
 
-- [ ] menu
+- [x] menu
 - [ ] menu styling
-- [ ] 'new game' dialog
+- [x] 'new game' dialog
 - [ ] dialog styling
-- [ ] create a grid
+- [x] create a grid
 - [ ] add pages
 - [ ] layout styling
-- [ ] add a card
+- [x] add a card
 - [ ] insert a card between two others
 - [ ] add custom image & name
-- [ ] edit/delete cards
-- [ ] re-arrange cards
-- [ ] import card from api
+- [ ] delete cards
+- [x] re-arrange cards
+- [x] import card from api
 - [ ] api dialog styling
-- [ ] save layout
-- [ ] load layout
+- [x] save layout
+- [x] load layout
