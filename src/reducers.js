@@ -1,4 +1,4 @@
-import { ADD_CARD, UPDATE_GRID, INIT_ALBUM, UPDATE_ALBUM, GET_HISTORICAL_ALBUM } from "./constants"
+import { ADD_CARD, UPDATE_GRID, INIT_ALBUM, UPDATE_ALBUM, GET_HISTORICAL_ALBUM, UNDO_HISTORY, REDO_HISTORY } from "./constants"
 
 const initialState = {
     grid: {
@@ -11,12 +11,18 @@ const initialState = {
         [null, null, null, null, null, null, null, null, null]
     ],
     pile: [],
-    history: [],
+    history: [{
+        album: [
+            [null, null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null, null]
+        ],
+        pile: []
+    }],
     historyPosition: 0
 }
 
 function rootReducer(state = initialState, action) {
-    let oldHistory, newHistory, historicalAlbum
+    let oldHistory, newHistory, historicalAlbum, newPosition
     switch(action.type){
         case UPDATE_GRID:
             return {
@@ -28,7 +34,10 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 album: action.payload.album,
                 pile: action.payload.pile,
-                history: [],
+                history: [{
+                    album: action.payload.album,
+                    pile: action.payload.pile
+                }],
                 historyPosition: 0
             }
         case UPDATE_ALBUM:
@@ -57,6 +66,24 @@ function rootReducer(state = initialState, action) {
                 history: [newHistory, ...oldHistory],
                 historyPosition: 0,
                 pile: [...state.pile, action.payload]
+            }
+        case UNDO_HISTORY:
+            newPosition = state.historyPosition + 1
+            historicalAlbum = state.history[newPosition]
+            return {
+                ...state,
+                historyPosition: newPosition,
+                album: historicalAlbum.album,
+                pile: historicalAlbum.pile
+            }
+        case REDO_HISTORY:
+            newPosition = state.historyPosition - 1
+            historicalAlbum = state.history[newPosition]
+            return {
+                ...state,
+                historyPosition: newPosition,
+                album: historicalAlbum.album,
+                pile: historicalAlbum.pile
             }
         default:
             return state
