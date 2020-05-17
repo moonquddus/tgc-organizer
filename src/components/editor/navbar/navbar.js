@@ -69,7 +69,7 @@ const Navbar = props => {
         <li onClick={newGameHandler}><img src={table} alt='New Album' /></li>
         <li onClick={loadHandler}><img src={folder} alt='Open' /></li>
         <li onClick={saveHandler}><img src={save} alt='Save' /></li>
-        <li class="divider"></li>
+        <li className="divider"></li>
         <li onClick={() => setShowNewCard(!showNewCard)}><img src={file} alt='New Card' /></li>
         <li onClick={undoHandler}><img src={undo} alt='Undo' /></li>
         <li onClick={redoHandler}><img src={redo} alt='Redo' /></li>
