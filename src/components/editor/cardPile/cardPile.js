@@ -1,14 +1,16 @@
 import React, {useState} from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import './cardPile.scss'
 
 const CardPile = props => {
-  const { pageCount, history, historyPosition, pile } = props
+  const { pageCount, pile } = props
 
   const generatePile = () => {
-    pile.map(card => (
-      <li>{card.name}</li>
+    let pileOutput = []
+    pile.map((card, index) => pileOutput.push(
+      <li key={`pile-${index}`}><img src={card.img} alt={card.name} /></li>
     ))
+    return pileOutput
   }
 
   return (
@@ -23,8 +25,6 @@ const CardPile = props => {
 const mapStateToProps = (state) => {
   return { 
       pageCount: state.grid.pages,
-      history: state.history,
-      historyPosition: state.historyPosition,
       pile: state.pile
   }
 }

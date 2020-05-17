@@ -48,7 +48,7 @@ const NewCard = props => {
       })
   }
 
-  const addCardToGrid = (card) => {
+  const addCardToPile = (card) => {
     dispatch(addCard({
       name: card.name,
       img: URL_IMG_CDN_LARGE + card.id + '.jpg'
@@ -58,7 +58,7 @@ const NewCard = props => {
 
   const searchResuts = results.map((result, index) => {
     if (index < 10) return (
-      <li key={result.id} onClick={() => addCardToGrid(result)}>
+      <li key={result.id} onClick={() => addCardToPile(result)}>
         <img src={`${URL_IMG_CDN_SMALL}${result.id}.jpg`} />
       </li>
     )

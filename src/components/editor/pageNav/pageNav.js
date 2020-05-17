@@ -19,6 +19,7 @@ const PageNav = props => {
         </li>
       )
     }
+    pageElements.push(<li key='page-all'><Link to='/editor/all'>All</Link></li>)
     return pageElements
   }
 
