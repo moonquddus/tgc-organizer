@@ -26,11 +26,15 @@
       display: inline-block;
       cursor: pointer;
       
-      > img {
+      > img, > a > img {
         height: 16px;
         margin: 7px 0;
         width: auto;
       }
+
     }
+  }
+  > input {
+    display: none;
   }
 }
