@@ -10,7 +10,7 @@ import {imageUrlToBase64} from '../../util/api'
 
 const NewCard = props => {
   const {open, setOpen, dispatch} = props
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('')
   const [results, setResults] = useState([])
 
   const [loading, setLoading] = useState(false)
@@ -62,7 +62,8 @@ const NewCard = props => {
   }
 
   const searchResuts = results.map((result, index) => {
-    if (index < 10) return (
+    // if (index < 10) return (
+    return (
       <li key={result.id} onClick={() => addCardToPile(result)}>
         <img src={`${URL_IMG_CDN_SMALL}${result.id}.jpg`} />
       </li>
