@@ -1,0 +1,1 @@
+export const newCopy = (original) => JSON.parse(JSON.stringify(original))

@@ -5,7 +5,8 @@ import Navbar from './navbar/navbar'
 import PageNav from './pageNav/pageNav'
 import CardPile from './cardPile/cardPile'
 
-import { updateAlbum } from "../../actions";
+import { updateAlbum } from "../../actions"
+import { newCopy } from "../../util/history"
 import './editor.scss'
 
 const Editor = props => {
@@ -69,9 +70,9 @@ const Editor = props => {
     }, [trgSwap])
 
     const gridToGridSwap = () => {
-        let newAlbum = [...album]
-        const cardA = album[srcSwap[0]][srcSwap[1]]
-        const cardB = album[trgSwap[0]][trgSwap[1]]
+        let newAlbum = newCopy(album)
+        const cardA = album[srcSwap[0]][srcSwap[1]] ? {...album[srcSwap[0]][srcSwap[1]]} : null
+        const cardB = album[trgSwap[0]][trgSwap[1]] ? {...album[trgSwap[0]][trgSwap[1]]} : null
         newAlbum[trgSwap[0]][trgSwap[1]] = cardA
         newAlbum[srcSwap[0]][srcSwap[1]] = cardB
 
@@ -83,9 +84,9 @@ const Editor = props => {
     }
 
     const gridToPileSwap = () => {
-        let newAlbum = [...album]
-        let newPile = [...pile]
-        const cardA = album[srcSwap[0]][srcSwap[1]]
+        let newAlbum = newCopy(album)
+        let newPile = newCopy(pile)
+        const cardA = {...album[srcSwap[0]][srcSwap[1]]}
         newAlbum[srcSwap[0]][srcSwap[1]] = null
         newPile.push(cardA)
 
@@ -97,10 +98,10 @@ const Editor = props => {
     }
 
     const pileToGridSwap = () => {
-        let newAlbum = [...album]
-        let newPile = [...pile]
-        const cardA = pile[srcSwap]
-        const cardB = album[trgSwap[0]][trgSwap[1]]
+        let newAlbum = newCopy(album)
+        let newPile = newCopy(pile)
+        const cardA = {...pile[srcSwap]}
+        const cardB = album[trgSwap[0]][trgSwap[1]] ? {...album[trgSwap[0]][trgSwap[1]]} : null
         newAlbum[trgSwap[0]][trgSwap[1]] = cardA
         newPile.splice(srcSwap, 1)
         // Are we swapping cards, or inserting into an empty grid slot?
