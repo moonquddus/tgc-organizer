@@ -9,7 +9,6 @@ import './app.scss';
 
 const App = () => (
   <Switch>
-    <Redirect from='/' to='/tgc-organizer' />
     <Route exact path="/tgc-organizer" component={Menu} />
     <Route path="/tgc-organizer/new-game" component={NewGame} />
     <Route path="/tgc-organizer/editor/:page" component={Editor} />
