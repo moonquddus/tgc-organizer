@@ -33,7 +33,7 @@ const NewGame = props => {
       pile: []
     }) )
 
-    history.push('/editor/1')
+    history.push('/tgc-organizer/editor/1')
   }
 
   return (

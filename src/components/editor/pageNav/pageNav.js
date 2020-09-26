@@ -15,11 +15,11 @@ const PageNav = props => {
     for (let i = 1; i <= pageCount; i++){
       pageElements.push(
         <li key={`page-${i}`}>
-          <Link to={`/editor/${i}`}>{i}</Link>
+          <Link to={`/tgc-organizer/editor/${i}`}>{i}</Link>
         </li>
       )
     }
-    pageElements.push(<li key='page-all'><Link to='/editor/all'>All</Link></li>)
+    pageElements.push(<li key='page-all'><Link to='/tgc-organizer/editor/all'>All</Link></li>)
     return pageElements
   }
 

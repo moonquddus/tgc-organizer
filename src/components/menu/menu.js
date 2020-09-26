@@ -22,7 +22,7 @@ const Menu = props => {
         album: saveData.album,
         pile: saveData.pile
       }))
-      history.push('/editor/1')
+      history.push('/tgc-organizer/editor/1')
     });
     reader.readAsText(theFile)
   }
@@ -32,7 +32,7 @@ const Menu = props => {
       <header className="Menu-header">
         <img src={logo} className="Menu-logo" alt="logo" />
         <p>TCG Card Organizer</p>
-        <p><Link to="/new-game/">New</Link></p>
+        <p><Link to="/tgc-organizer/new-game/">New</Link></p>
         <p><label htmlFor='load-file'>Load Saved File<input type="file" id="load-file" name="load-file" onChange={fileHandler} /></label></p>
         <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></div>
       </header>
