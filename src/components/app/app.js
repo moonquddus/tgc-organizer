@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Route, Switch } from "react-router-dom";
-
+import { Route, Switch, Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
 import Menu from '../menu/menu';
 import NewGame from '../newgame/newgame';
 import Editor from '../editor/editor';
@@ -9,11 +9,17 @@ import './app.scss';
 
 const App = () => (
   <Switch>
-    <Route exact path="/" component={Menu} />
-    <Route path="/new-game" component={NewGame} />
-    <Route path="/editor/:page" component={Editor} />
-    <Route path="/editor" component={Editor} />
+    <Redirect from='/' to='/tgc-organizer' />
+    <Route exact path="/tgc-organizer" component={Menu} />
+    <Route path="/tgc-organizer/new-game" component={NewGame} />
+    <Route path="/tgc-organizer/editor/:page" component={Editor} />
+    <Route path="/tgc-organizer/editor" component={Editor} />
   </Switch>
 )
 
-export default App
+const mapStateToProps = (state) => {
+  return { 
+      isLoggedIn: state.isLoggedIn
+  }
+}
+export default connect(mapStateToProps)(App)
