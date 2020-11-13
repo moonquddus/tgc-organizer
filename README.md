@@ -26,3 +26,7 @@ Personal Project made with React/Redux to organize a card collection album
 - [ ] api dialog styling
 - [x] save layout
 - [x] load layout
+
+## Credits
+
+Using this API to search for & load cards: https://db.ygoprodeck.com/api-guide/
